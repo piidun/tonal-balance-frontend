@@ -1,0 +1,14 @@
+body {
+    font-family:monospace;
+    background-color: black;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1rem;
+    margin-top: 15spx;
+}
