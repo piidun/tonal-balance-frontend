@@ -6,7 +6,7 @@
         <div v-if="!loggedIn" class="w-100">
             <a href="login">Login</a>
             <i> | </i>
-            <a>Register</a>
+            <a href="register-account">Register</a>
         </div>
 
         <div v-if="loggedIn">
@@ -32,7 +32,6 @@ const getCredits = async () => {
 
         const data = await response.json();
         creditsRemaining.value = data.credits;
-        alert('Login successful');
         // Redirect to the desired page
     } catch (error) {
 

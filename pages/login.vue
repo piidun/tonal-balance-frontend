@@ -41,7 +41,10 @@ const handleLogin = async () => {
     // Handle successful login here
     const token = useCookie('token');
     token.value = response.data.token;
-    location.reload();
+
+    if (response.data.token) {
+      window.location.href = '/';
+    }
   } catch (error: any) {
     errorMessage.value = (error as Error).message;
   }
