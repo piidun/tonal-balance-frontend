@@ -1,31 +1,49 @@
 <template>
-<header class="w-full p-5 bg-slate-600 flex justify-between">
-    <div class="w-1/3">
-    spectral<img src="assets/img/logosmall.png" class="w-12 mx-4 inline">shaper
-    </div>
-    <div v-if="!loggedIn" class="w-100">
-        <a>Login</a>
-        <i> | </i>
-        <a>Register</a>
-    </div>
+    <header class="w-full p-5 bg-slate-600 flex justify-between">
+        <div class="w-1/3">
+            spectral<img src="assets/img/logosmall.png" class="w-12 mx-4 inline">shaper
+        </div>
+        <div v-if="!loggedIn" class="w-100">
+            <a href="login">Login</a>
+            <i> | </i>
+            <a>Register</a>
+        </div>
 
-    <div v-if="loggedIn">
-        <div>
-        My account<Icon name="uil:user"/>
-    </div>
-    <div>
-        Credits: 4 <Icon name="uil:coins"/>
-    </div>
-        
-    </div>
-</header>
+        <div v-if="loggedIn">
+            Welcome, user!
+        </div>
+    </header>
 </template>
 
 <script setup lang="ts">
-const loggedIn = ref(false);
-const token = useCookie("token");
-console.log(token.value);
-if (token.value.length > 0) {
-    loggedIn.value = true;
+const creditsRemaining = ref(0);
+
+const getCredits = async () => {
+    try {
+        const response = await fetch('/api/credits', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Invalid username');
+        }
+
+        const data = await response.json();
+        creditsRemaining.value = data.credits;
+        alert('Login successful');
+        // Redirect to the desired page
+    } catch (error) {
+
+    }
 }
+
+getCredits();
+    const token = useCookie("token");
+    const loggedIn = ref(false);
+    console.log(token.value);
+    if (token.value) {
+        loggedIn.value = true;
+    }
 </script>

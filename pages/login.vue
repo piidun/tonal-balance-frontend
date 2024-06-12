@@ -1,62 +1,51 @@
 <!-- pages/login.vue -->
 <template>
   <div class="flex flex-row justify-center">
-  <div class="login-container mt-20">
-    <h1>Login</h1>
-    <form @submit.prevent="handleLogin">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <div class="login-container mt-20">
+      <h1>Login</h1>
+      <form @submit.prevent="handleLogin">
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" id="username" v-model="username" required />
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="password" required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    </div>
   </div>
-</div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  name: 'Login',
-  setup() {
-    const username = ref<string>('');
-    const password = ref<string>('');
-    const errorMessage = ref<string>('');
+<script setup lang="ts">
+const username = ref<string>("");
+const password = ref<string>("");
+const errorMessage = ref<string>("");
 
-    const handleLogin = async () => {
-      try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username: username.value, password: password.value }),
-        });
-        if (!response.ok) {
-          throw new Error('Invalid username or password');
-        }
-        const data = await response.json();
-        const token = useCookie("token");
-        token.value = data.token;
-        alert('Login successful');
-        // Redirect to the desired page
-      } catch (error) {
-        errorMessage.value = (error as Error).message;
-      }
-    };
+import axios from 'axios';
 
-    return {
-      username,
-      password,
-      errorMessage,
-      handleLogin
-    };
+const handleLogin = async () => {
+  try {
+    const response = await axios.post("/api/login", {
+      username: username.value,
+      password: password.value,
+    });
+
+    // Check if the response status is not 200
+    if (response.status !== 200) {
+      throw new Error("Invalid username or password");
+    }
+
+    // Handle successful login here
+    const token = useCookie('token');
+    token.value = response.data.token;
+    location.reload();
+  } catch (error: any) {
+    errorMessage.value = (error as Error).message;
   }
-});
+};
 </script>
 
 <style scoped>
