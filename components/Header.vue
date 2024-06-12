@@ -10,36 +10,17 @@
         </div>
 
         <div v-if="loggedIn">
-            Welcome, user!
+            Welcome, {{ userName }}
         </div>
     </header>
 </template>
 
 <script setup lang="ts">
-const creditsRemaining = ref(0);
-
-const getCredits = async () => {
-    try {
-        const response = await fetch('/api/credits', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error('Invalid username');
-        }
-
-        const data = await response.json();
-        creditsRemaining.value = data.credits;
-        // Redirect to the desired page
-    } catch (error) {
-
-    }
-}
-
-getCredits();
+import { getUsernameFromToken } from '@/services/authService';
+    const userName = ref('');
     const token = useCookie("token");
+
+    userName.value = getUsernameFromToken(token.value) ?? ''
     const loggedIn = ref(false);
     console.log(token.value);
     if (token.value) {

@@ -6,11 +6,11 @@
             <h2 class="text-2xl text-slate-700 font-bold mb-6">Account Information</h2>
             <div class="mb-4">
                 <h3 class="block text-gray-700">Username</h3>
-                <div class="text-slate-500 ml-1">tonyartn</div>
+                <div class="text-slate-500 ml-1">{{ userName }}</div>
             </div>
             <div class="mb-4">
               <h3 class="block text-gray-700">Remaining Credits</h3>
-              <div class="text-slate-500 ml-1">3</div>
+              <div class="text-slate-500 ml-1">{{ creditsRemaining }}</div>
             </div>
             <div class="mb-6">
               <label class="block text-gray-700">Reset Password</label>
@@ -22,4 +22,37 @@
       </div>
     </div>
   </template>
+
+  <script setup lang="ts">
+
+import { getUsernameFromToken } from '@/services/authService';
+    const userName = ref('');
+    const token = useCookie("token");
+
+    userName.value = getUsernameFromToken(token.value) ?? ''
+
+const creditsRemaining = ref(0);
+
+const getCredits = async () => {
+    try {
+        const response = await fetch('/api/credits', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Invalid username');
+        }
+
+        const data = await response.json();
+        creditsRemaining.value = data.credits;
+        console.log(data.credits + "asd");
+        // Redirect to the desired page
+    } catch (error) {
+
+    }
+}
+getCredits();
+</script>
   
