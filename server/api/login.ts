@@ -5,7 +5,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const body = await readBody(event);
   console.log(config.public.apiBase);
   const response = await axios.post(
-    config.public.apiBase + "/Api/Auth/login",
+    "http://" + config.public.apiBase + "/Api/Auth/login",
     body
   );
   if (response.status === 200) {

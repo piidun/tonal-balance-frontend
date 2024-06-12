@@ -7,7 +7,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
   try {
     const response = await axios.post(
-      `${config.public.apiBase}/Api/Auth/register`,
+      `http://${config.public.apiBase}/Api/Auth/register`,
       body
     );
     
