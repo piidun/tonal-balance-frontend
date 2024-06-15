@@ -59,8 +59,11 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from 'axios';
+
 
 const files = ref();
+let file = null;
 const filename = ref();
 const success = ref();
 const error = ref();
@@ -70,7 +73,7 @@ const readyToProcess = ref(false);
 
 function onFileChange(e) {
   readyToProcess.value = true;
-  const file = e.target.files[0];
+  file = e.target.files[0];
   filename.value = file.name;
 }
 
@@ -83,7 +86,7 @@ async function uploadImage() {
     formData.append("file", files.value.files[0]);
 
     const response = await fetch(
-      "http://localhost:5179/api/fileupload/upload",
+      "api/upload",
       {
         method: "POST",
         body: formData,
@@ -95,7 +98,7 @@ async function uploadImage() {
     }
 
     const data = await response.json();
-    processedFilePath.value = data.filePath;
+    processedFilePath.value = data.fileName;
     success.value = "File uploaded and processed successfully!";
     startedToProcess.value = false;
   } catch (e) {
@@ -106,20 +109,15 @@ async function uploadImage() {
 
 async function downloadFile() {
   try {
-    const response = await fetch(
-      `http://localhost:5179/api/fileupload/download/${processedFilePath.value
-        .split("/")
-        .pop()}`,
-      {
-        method: "GET",
-      }
-    );
-
-    if (!response.ok) {
+    const response = await axios.get(`/api/download?filename=${processedFilePath.value}`, { responseType: 'blob' });
+console.log(response)
+console.log(processedFilePath.value)
+    if (response.status != 200) {
       throw new Error(`Error: ${response.statusText}`);
     }
 
-    const blob = await response.blob();
+    const blob = response.data;
+    console.log(blob);
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
