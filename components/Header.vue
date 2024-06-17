@@ -1,7 +1,7 @@
 <template>
     <header class="w-full p-5 bg-slate-600 flex justify-between">
-        <div class="w-1/3">
-            spectral<img src="assets/img/logosmall.png" class="w-12 mx-4 inline">shaper
+        <div class="w-1/3 text-pink-400">
+            <img src="assets/img/logosmall.png" class="w-12 mx-4 inline">AudioSmasher
         </div>
         <div v-if="!loggedIn" class="w-100">
             <a href="login">Login</a>
@@ -17,13 +17,17 @@
 
 <script setup lang="ts">
 import { getUsernameFromToken } from '@/services/authService';
+import { useCookie } from '#imports';
     const userName = ref('');
     const token = useCookie("token");
-
-    userName.value = getUsernameFromToken(token.value) ?? ''
+    const tokenValue = token.value || ''; // Default to an empty string if token.value is undefined or null
+    userName.value = getUsernameFromToken(tokenValue) ?? '';
     const loggedIn = ref(false);
-    console.log(token.value);
     if (token.value) {
         loggedIn.value = true;
     }
 </script>
+
+<style scoped>
+
+</style>

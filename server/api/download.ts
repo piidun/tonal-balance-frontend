@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
                 statusMessage: "Failed to download file",
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         throw createError({
             statusCode: 500,
             statusMessage: error.message,

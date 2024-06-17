@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { getUsernameFromToken } from '@/services/authService';
 const creditsRemaining = ref(0);
+const token = useCookie("token");
+const userid = getUsernameFromToken(token.value);
 
 const getCredits = async () => {
     try {
-        const response = await fetch('/api/credits', {
+        const response = await fetch(`/api/credits?userid=${userid}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,7 +24,6 @@ const getCredits = async () => {
 
     }
 }
-
 getCredits();
 
 const route = useRoute()
@@ -44,7 +46,7 @@ const links = computed(() => [{
 }, {
   label: 'Purchase credits',
   icon: 'i-heroicons-credit-card',
-  to: '/components/command-palette'
+  to: '/purchase'
 }])
 </script>
 

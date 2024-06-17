@@ -60,6 +60,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from 'axios';
+import { getUsernameFromToken } from '@/services/authService';
 
 
 const files = ref();
@@ -86,7 +87,7 @@ async function uploadImage() {
     formData.append("file", files.value.files[0]);
 
     const response = await fetch(
-      "api/upload",
+      `api/upload?username=${getUsernameFromToken(useCookie('token').value)}`,
       {
         method: "POST",
         body: formData,

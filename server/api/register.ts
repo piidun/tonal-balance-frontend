@@ -19,7 +19,7 @@ export default defineEventHandler(async (event: H3Event) => {
         statusMessage: "Registration failed",
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     throw createError({
       statusCode: error.response ? error.response.status : 500,
       statusMessage: error.message || "An error occurred",
