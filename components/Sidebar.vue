@@ -42,7 +42,7 @@ const links = computed(() => [{
 }, {
   label: 'About',
   icon: 'i-heroicons-information-circle',
-  to: '/'
+  to: '/about'
 }, {
   label: 'Purchase credits',
   icon: 'i-heroicons-credit-card',

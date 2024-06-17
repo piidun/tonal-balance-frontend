@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
-    <Header class="header"></Header>
+    <Header v-if="loggedIn" class="header"></Header>
     <div class="main-content">
-      <Sidebar class="sidebar bg-slate-800"></Sidebar>
+      <Sidebar v-if="loggedIn" class="sidebar bg-slate-800"></Sidebar>
       <NuxtPage class="page-content" />
     </div>
   </div>
@@ -10,9 +10,19 @@
 
 <script setup lang="ts">
 import '~/assets/css/main.css'
+import { getUsernameFromToken } from '@/services/authService';
+import { useCookie } from '#imports';
 definePageMeta({
   middleware: 'auth'
 });
+    const userName = ref('');
+    const token = useCookie("token");
+    const tokenValue = token.value || '';
+    userName.value = getUsernameFromToken(tokenValue) ?? '';
+    const loggedIn = ref(false);
+    if (token.value) {
+        loggedIn.value = true;
+    }
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <!-- pages/login.vue -->
 <template>
-  <div class="flex flex-row justify-center">
-    <div class="login-container mt-20">
+  <div class="flex flex-row justify-center w-full">
+    <div class="login-container h-80 mt-20 w-1/2">
       <h1>Login</h1>
       <form @submit.prevent="handleLogin">
         <div>
