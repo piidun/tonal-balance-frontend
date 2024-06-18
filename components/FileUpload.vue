@@ -1,6 +1,16 @@
 <template>
   <form class="mt-4 flex flex-col space-y-4" @submit.prevent="uploadImage">
     <div class="flex flex-wrap items-center">
+      <div class="w-full">
+        <label for="process-level" class="text-slate-800 block">Amount of processing</label>
+        <select class="w-1/2 h-8 mb-5" v-model="strength" id="process-level">
+          <option value="0.3">Weak</option>
+          <option value="0.5" selected>Medium</option>
+          <option value="0.7">Strong</option>
+          <option value="1">Crushing</option>
+          <option value="2">Wrecking</option>
+        </select>
+      </div>
       <div class="flex items-center justify-center h-12 w-40">
         <label
           for="dropzone-file"
@@ -71,6 +81,7 @@ const error = ref();
 const processedFilePath = ref();
 const startedToProcess = ref(false);
 const readyToProcess = ref(false);
+const strength = ref(0.5);
 
 function onFileChange(e) {
   readyToProcess.value = true;
@@ -87,7 +98,7 @@ async function uploadImage() {
     formData.append("file", files.value.files[0]);
 
     const response = await fetch(
-      `api/upload?username=${getUsernameFromToken(useCookie('token').value)}`,
+      `api/upload?username=${getUsernameFromToken(useCookie('token').value)}&mixfactor=${strength.value}`,
       {
         method: "POST",
         body: formData,

@@ -7,8 +7,9 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event);
   const username = query.username;
+  const mixfactor = query.mixfactor;
 
-    const response = await axios.post(`http://${config.public.apiBase}/api/FileUpload/upload?username=${username}`, body, {
+    const response = await axios.post(`http://${config.public.apiBase}/api/FileUpload/upload?username=${username}&mixfactor=${mixfactor}`, body, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

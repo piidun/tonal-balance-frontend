@@ -1,5 +1,6 @@
 <!-- pages/login.vue -->
 <template>
+  <div @click="goToFrontPage()" class="w-full pl-12 h-8 p-2 text-white bg fixed cursor-pointer">AUDIO SMASHER</div>
   <div class="flex flex-row justify-center w-full">
     <div class="login-container h-80 mt-20 w-1/2">
       <h1>Login</h1>
@@ -25,6 +26,10 @@ const password = ref<string>("");
 const errorMessage = ref<string>("");
 
 import axios from 'axios';
+
+const goToFrontPage = () => {
+    window.location.href="/";
+}
 
 const handleLogin = async () => {
   try {
